@@ -1,5 +1,5 @@
 const CONFIG = {
-  GOOGLE_APPS_SCRIPT_URL: "",
+  GOOGLE_APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbzJJnw0e24mpywFUjnMYkNGAhuMbSW9hjmqcpm5LK3XJ2hXNm2jpXFsB9jCaSsYG3av/exec",
   CONTACT_EMAIL: "missboss.service@gmail.com"
 };
 
