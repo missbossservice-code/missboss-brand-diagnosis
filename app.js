@@ -77,7 +77,7 @@ document.getElementById("consultationForm").addEventListener("submit",async e=>{
   let central=false; try{central=await sendCentral(latest)}catch(err){console.error(err)}
   form.hidden=true; const success=document.getElementById("success");success.hidden=false;
   document.getElementById("centralStatus").textContent=central
-    ?"感謝您的耐心填寫,我們將盡快與您聯繫!"
+    ?"感謝您的耐心填寫，我們將盡快與您聯繫！"
     :"目前尚未設定中央資料庫；請下載 CSV，並寄至 missboss.service@gmail.com，以確保 MISSBOSS 收到妳的需求。";
   success.scrollIntoView({behavior:"smooth",block:"center"});
 });
