@@ -39,6 +39,73 @@ function doPost(e) {
     ].join("\n");
     MailApp.sendEmail(NOTIFY_EMAIL, subject, body);
 
+    // 自動回覆填表者
+    if (v.email) {
+      const visitorSubject = "MISSBOSS 已收到您的品牌診斷需求";
+      const visitorBody = [
+        `您好，${v.name || "朋友"}：`,
+        "",
+        "感謝您的耐心填寫，我們已收到您的「個人品牌 × Podcast」諮詢需求。",
+        "我們將依照您目前的品牌現況、Podcast 需求、合作方式與期待成果進行初步整理。",
+        "我們會在 5 個工作天內盡快回覆您，並透過您留下的 Email 或聯絡方式與您聯繫。",
+        "",
+        "在正式回覆前，也歡迎您先整理：",
+        "想被市場如何記住、目前最希望解決的問題，以及未來 3 個月最想完成的成果?",
+        "",
+        "謝謝您把重要的品牌下一步交給我們。",
+        "如有任何建議和回饋，也歡迎您隨時回信與我們聯絡!",
+        "",
+        "Jean Lee/ MissBoss",
+        "個人品牌 × Podcast 聲音品牌顧問",
+        "missboss.service@gmail.com",
+        "www.miss-boss.com",
+        "",
+        "此為系統自動確認信，請勿重複提交表單。"
+      ].join("\n");
+
+      const safeName = String(v.name || "朋友")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+      const visitorHtml = `
+        <div style="font-family:Arial,'Noto Sans TC',sans-serif;line-height:1.8;color:#3a2a2f;font-size:15px;">
+          <p>您好，${safeName}：</p>
+
+          <p>感謝您的耐心填寫，我們已收到您的「個人品牌 × Podcast」諮詢需求。</p>
+
+          <p>我們將依照您目前的品牌現況、Podcast 需求、合作方式與期待成果進行初步整理。</p>
+
+          <p>我們會在 <strong>5 個工作天內盡快回覆您</strong>，並透過您留下的 Email 或聯絡方式與您聯繫。</p>
+
+          <p>在正式回覆前，也歡迎您先整理：<br>
+          想被市場如何記住、目前最希望解決的問題，以及未來 3 個月最想完成的成果?</p>
+
+          <p>謝謝您把重要的品牌下一步交給我們。<br>
+          如有任何建議和回饋，也歡迎您隨時回信與我們聯絡!</p>
+
+          <p style="margin-top:28px;">
+            Jean Lee/ MissBoss<br>
+            個人品牌 × Podcast 聲音品牌顧問<br>
+            <a href="mailto:missboss.service@gmail.com" style="color:#7B2D45;">missboss.service@gmail.com</a><br>
+            <a href="http://www.miss-boss.com" style="color:#7B2D45;">www.miss-boss.com</a>
+          </p>
+
+          <p style="margin-top:26px;font-weight:700;color:#7B2D45;">「此為系統自動確認信，請勿重複提交表單。」</p>
+        </div>`;
+
+      MailApp.sendEmail({
+        to: v.email,
+        subject: visitorSubject,
+        body: visitorBody,
+        htmlBody: visitorHtml,
+        name: "MISSBOSS",
+        replyTo: NOTIFY_EMAIL
+      });
+    }
+
     return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService.createTextOutput(JSON.stringify({ok:false,error:String(err)})).setMimeType(ContentService.MimeType.JSON);
